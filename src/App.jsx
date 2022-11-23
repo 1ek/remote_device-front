@@ -9,7 +9,7 @@ function App() {
   return (
     <div className="app__container">
         <div className='device__container'>
-            <Screen url={'wss://123.11.11.2'}/>
+            <Screen url={'ws://172.25.16.1:6080/websockify?token=SA1'}/>
             <Buttons/>
         </div>
     </div>

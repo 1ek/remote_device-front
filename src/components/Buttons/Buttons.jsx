@@ -8,8 +8,8 @@ const Buttons = () => {
         console.log(e.currentTarget.id)
         fetch(url, {
             method: 'GET',
-            // mode: 'cors'
-        }).then(data => data).then(res => console.log(res))
+            mode: 'no-cors'
+        }).then(res => console.log(res))
     }
 
     const renderButtons = (buttons) => {

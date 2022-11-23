@@ -1,4 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&display=swap');
+
 .buttons__container {
+    min-width: 250px;
     width: 270px;
     align-self: center;
     background-color: #0e161b;
@@ -11,6 +14,7 @@
 }
 
 .device__button {
+    font-family: 'JetBrains Mono', monospace;
     height: 37px;
     border-radius: 3px;
     display: flex;
