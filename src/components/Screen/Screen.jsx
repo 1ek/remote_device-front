@@ -6,18 +6,14 @@ import './Screen.scss'
 import '../Buttons/Buttons.scss'
 
 
-
-
 const Screen = ({ url }) => {
-   
-
     const [loading, setLoading] = useState(false)
     const [connected, setConnected] = useState(false)
 
+    
     const screen = useRef(null)
     const rfb = useRef(null)
-
-
+    // const eventListeners = useRef({})
 
 
     const setRfb = (_rfb) => {
@@ -26,43 +22,75 @@ const Screen = ({ url }) => {
 
     const getRfb = () => {
         return rfb.current;
-    };
+    }
+
+
+    const onConnect = () => {
+        console.log('CONNECTED')
+        setLoading(false)
+        setConnected(true)
+    }
+
+    const onDisconnect = () => {
+        console.log('DISCONNECTED')
+        setLoading(false)
+        setConnected(false)
+    }
+
+    const onCredentialsrequired = () => {
+        const session = getRfb()
+        const pass = prompt('PASSWORD REQUIRED:')
+        session.sendCredentials({password: pass})
+    }
+
+    const events = {
+        connect: onConnect,
+        disconnect: onDisconnect,
+        credentialsrequired: onCredentialsrequired
+    }
+
 
     const connect = () => {
-        setLoading(true)
         const _rfb = new RFB(screen.current, url)
+
         _rfb.clipViewport = true
         _rfb.scaleViewport = true
         _rfb.qualityLevel = 6
+        _rfb.compressionLevel = 2
+        _rfb.background = '#000'
         setRfb(_rfb)
 
-        _rfb.background = '#000'
+        const addEventListeners = (_rfb) => {
+            Object.keys(events).forEach(event => {
+                _rfb.addEventListener(event, events[event])
+            })
+        }
 
-        _rfb.addEventListener('connect', () => {
-            console.log('CONNECTED')
-            setLoading(false)
-            setConnected(true)
-        })
+        addEventListeners(_rfb)
 
-        _rfb.addEventListener('disconnect', () => {
-            console.log('DISCONNECTED')
-            setLoading(false)
-            setConnected(false)
-        })
-
-        _rfb.addEventListener('credentialsrequired', () => {
-            const pass = prompt('PASSWORD REQUIRED:')
-            _rfb.sendCredentials({password: pass})
-        })
+        setLoading(true)
     }
 
     const disconnect = () => {
         const session = getRfb()
+        if (!session) {
+            console.error('There is no session to disconnect from')
+            return
+        }
+
+        const removeEventListeners = (_rfb) => {
+            Object.keys(events).forEach(event => {
+                _rfb.removeEventListener(event, events[event])
+            })
+        }
+
+        removeEventListeners(session)
+      
         session.disconnect()
+        setRfb(null)
+        setConnected(false)
     }
 
-    
-    
     
     return (
         <>
