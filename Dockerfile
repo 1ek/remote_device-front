@@ -8,7 +8,7 @@ RUN npm install
 
 COPY . .
 
-VOLUME /app/src
+VOLUME /app
 
 EXPOSE 5173
 
