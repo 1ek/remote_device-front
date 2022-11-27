@@ -6,9 +6,9 @@ COPY package*.json ./
 
 RUN npm install
 
-VOLUME /app/src
-
 COPY . .
+
+VOLUME /app/src
 
 EXPOSE 5173
 
