@@ -41,7 +41,16 @@
 .screen_placeholder {
     height: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     background-color: #0e161b;
+}
+
+.device__ip {
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    height: 30px;
+    width: 150px;
+    border-radius: 5px;
 }

@@ -13,6 +13,7 @@ const Screen = ({ url }) => {
     
     const screen = useRef(null)
     const rfb = useRef(null)
+    const device_url = useRef(null)
     // const eventListeners = useRef({})
 
 
@@ -50,8 +51,10 @@ const Screen = ({ url }) => {
     }
 
 
-    const connect = () => {
-        const _rfb = new RFB(screen.current, url)
+    const connect = (device_url) => {
+        if (!device_url) { throw 'URL is required' }
+        const res_url = `ws://${device_url}:6080/websockify?token=SA1`
+        const _rfb = new RFB(screen.current, res_url)
 
         _rfb.clipViewport = true
         _rfb.scaleViewport = true
@@ -103,7 +106,8 @@ const Screen = ({ url }) => {
             <div ref={screen} className="novnc_canvas">
                 {!loading && !connected ? 
                     <div className="screen_placeholder">
-                        <button disabled={loading} className='device__button button__unique' onClick={connect}>CONNECT</button>
+                        <input className='device__ip' type="text" ref={device_url}/>
+                        <button disabled={loading} className='device__button button__unique' onClick={() => connect(device_url.current.value)}>CONNECT</button>
                     </div> 
                 : null}
             </div>
